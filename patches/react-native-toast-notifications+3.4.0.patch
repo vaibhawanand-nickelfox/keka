@@ -1,0 +1,90 @@
+diff --git a/node_modules/react-native-toast-notifications/lib/typescript/toast.d.ts b/node_modules/react-native-toast-notifications/lib/typescript/toast.d.ts
+index 2639305..23fceea 100644
+--- a/node_modules/react-native-toast-notifications/lib/typescript/toast.d.ts
++++ b/node_modules/react-native-toast-notifications/lib/typescript/toast.d.ts
+@@ -26,9 +26,13 @@ export interface ToastOptions {
+      */
+     style?: StyleProp<ViewStyle>;
+     /**
+-     * Customize style of toast text
++     * Customize style of Success toast text
+      */
+-    textStyle?: StyleProp<TextStyle>;
++    successTextStyle?: StyleProp<TextStyle>;
++    /**
++     * Customize style of Danger toast text
++     */
++    dangerTextStyle?: StyleProp<TextStyle>;
+     /**
+      * Customize how fast toast will show and hide
+      */
+diff --git a/node_modules/react-native-toast-notifications/src/toast.tsx b/node_modules/react-native-toast-notifications/src/toast.tsx
+index bbabca6..d910cb1 100644
+--- a/node_modules/react-native-toast-notifications/src/toast.tsx
++++ b/node_modules/react-native-toast-notifications/src/toast.tsx
+@@ -47,9 +47,14 @@ export interface ToastOptions {
+   style?: StyleProp<ViewStyle>;
+ 
+   /**
+-   * Customize style of toast text
++   * Customize style of Success toast text
+    */
+-  textStyle?: StyleProp<TextStyle>;
++  successTextStyle?: StyleProp<TextStyle>;
++  
++  /**
++   * Customize style of Danger toast text
++   */
++  dangerTextStyle?: StyleProp<TextStyle>;
+ 
+   /**
+    * Customize how fast toast will show and hide
+@@ -133,7 +138,8 @@ const Toast: FC<ToastProps> = (props) => {
+     message,
+     duration = 5000,
+     style,
+-    textStyle,
++    successTextStyle,
++    dangerTextStyle,
+     animationDuration = 250,
+     animationType = "slide-in",
+     successIcon,
+@@ -335,12 +341,15 @@ const Toast: FC<ToastProps> = (props) => {
+               style,
+             ]}
+           >
+-            {icon ? <View style={styles.iconContainer}>{icon}</View> : null}
++                {icon ? <View style={styles.iconContainer}>{icon}</View> : null}
++                <View style={styles.messageContainer}>
++
+             {React.isValidElement(message) ? (
+               message
+             ) : (
+-              <Text style={[styles.message, textStyle]}>{message}</Text>
++              <Text numberOfLines={99} style={[(type === "success" ? successTextStyle : type === "danger" ? dangerTextStyle : styles.message)]}>{message}</Text>
+             )}
++            </View>
+           </View>
+         </TouchableWithoutFeedback>
+       )}
+@@ -349,8 +358,9 @@ const Toast: FC<ToastProps> = (props) => {
+ };
+ 
+ const styles = StyleSheet.create({
+-  container: { width: "100%", alignItems: "center" },
++  container: { flex: 1, alignItems: "center" },
+   toastContainer: {
++    flex: 1,
+     paddingHorizontal: 12,
+     paddingVertical: 12,
+     borderRadius: 5,
+@@ -359,6 +369,9 @@ const styles = StyleSheet.create({
+     alignItems: "center",
+     overflow: "hidden",
+   },
++  messageContainer: {
++    flex: 1
++  },
+   message: {
+     color: "#fff",
+     fontWeight: "500",

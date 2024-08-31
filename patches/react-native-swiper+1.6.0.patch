@@ -1,0 +1,27 @@
+diff --git a/node_modules/react-native-swiper/src/index.js b/node_modules/react-native-swiper/src/index.js
+index 3e63ca7..6250d38 100644
+--- a/node_modules/react-native-swiper/src/index.js
++++ b/node_modules/react-native-swiper/src/index.js
+@@ -22,8 +22,6 @@ import {
+ const styles = {
+   container: {
+     backgroundColor: 'transparent',
+-    position: 'relative',
+-    flex: 1
+   },
+ 
+   wrapperIOS: {
+@@ -862,11 +860,12 @@ export default class extends Component {
+ 
+     return (
+       <View style={[styles.container, containerStyle]} onLayout={this.onLayout}>
+-        {this.renderScrollView(pages)}
++        
+         {showsPagination &&
+           (renderPagination
+             ? renderPagination(index, total, this)
+             : this.renderPagination())}
++            {this.renderScrollView(pages)}
+         {this.renderTitle()}
+         {showsButtons && this.renderButtons()}
+       </View>

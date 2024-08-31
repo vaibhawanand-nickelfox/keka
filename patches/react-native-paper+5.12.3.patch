@@ -1,0 +1,319 @@
+diff --git a/node_modules/react-native-paper/src/components/DataTable/DataTablePagination.tsx b/node_modules/react-native-paper/src/components/DataTable/DataTablePagination.tsx
+index dd72dbe..32aba6e 100644
+--- a/node_modules/react-native-paper/src/components/DataTable/DataTablePagination.tsx
++++ b/node_modules/react-native-paper/src/components/DataTable/DataTablePagination.tsx
+@@ -4,6 +4,7 @@ import {
+   I18nManager,
+   StyleProp,
+   StyleSheet,
++  TouchableOpacity,
+   View,
+   ViewStyle,
+ } from 'react-native';
+@@ -17,6 +18,7 @@ import IconButton from '../IconButton/IconButton';
+ import MaterialCommunityIcon from '../MaterialCommunityIcon';
+ import Menu from '../Menu/Menu';
+ import Text from '../Typography/Text';
++import { Image } from 'react-native';
+ 
+ export type Props = React.ComponentPropsWithRef<typeof View> &
+   PaginationControlsProps &
+@@ -32,7 +34,7 @@ export type Props = React.ComponentPropsWithRef<typeof View> &
+     /**
+      * Label text to display which indicates current pagination.
+      */
+-    label?: React.ReactNode;
++  label?: React.ReactNode;
+     /**
+      * AccessibilityLabel for `label`.
+      */
+@@ -45,6 +47,10 @@ export type Props = React.ComponentPropsWithRef<typeof View> &
+   };
+ 
+ type PaginationDropdownProps = {
++  /**
++   * Custom component to render as label for pagination.
++   */
++  labelComponent?: React.ReactNode;
+   /**
+    * The current number of rows per page.
+    */
+@@ -114,6 +120,8 @@ const PaginationControls = ({
+     <>
+       {showFastPaginationControls ? (
+         <IconButton
++          mode='contained'
++          containerColor='#F3F8FE'
+           icon={({ size, color }) => (
+             <MaterialCommunityIcon
+               name="page-first"
+@@ -122,15 +130,18 @@ const PaginationControls = ({
+               direction={I18nManager.getConstants().isRTL ? 'rtl' : 'ltr'}
+             />
+           )}
+-          iconColor={textColor}
++          iconColor={'#1F59AF'}
++          bRadius={4}
+           rippleColor={paginationControlRippleColor}
+-          disabled={page === 0}
+-          onPress={() => onPageChange(0)}
++          disabled={page === 1}
++          onPress={() => onPageChange(1)}
+           accessibilityLabel="page-first"
+           theme={theme}
+         />
+       ) : null}
+       <IconButton
++        mode='contained'
++        containerColor='#F3F8FE'
+         icon={({ size, color }) => (
+           <MaterialCommunityIcon
+             name="chevron-left"
+@@ -139,14 +150,17 @@ const PaginationControls = ({
+             direction={I18nManager.getConstants().isRTL ? 'rtl' : 'ltr'}
+           />
+         )}
+-        iconColor={textColor}
++        iconColor={'#1F59AF'}
++        bRadius={4}
+         rippleColor={paginationControlRippleColor}
+-        disabled={page === 0}
++        disabled={page === 1}
+         onPress={() => onPageChange(page - 1)}
+         accessibilityLabel="chevron-left"
+         theme={theme}
+       />
+       <IconButton
++        mode='contained'
++        containerColor='#F3F8FE'
+         icon={({ size, color }) => (
+           <MaterialCommunityIcon
+             name="chevron-right"
+@@ -155,15 +169,18 @@ const PaginationControls = ({
+             direction={I18nManager.getConstants().isRTL ? 'rtl' : 'ltr'}
+           />
+         )}
+-        iconColor={textColor}
++        iconColor={'#1F59AF'}
++        bRadius={4}
+         rippleColor={paginationControlRippleColor}
+-        disabled={numberOfPages === 0 || page === numberOfPages - 1}
++        disabled={numberOfPages === 0 || page === numberOfPages}
+         onPress={() => onPageChange(page + 1)}
+         accessibilityLabel="chevron-right"
+         theme={theme}
+       />
+       {showFastPaginationControls ? (
+         <IconButton
++          mode='contained'
++          containerColor='#F3F8FE'
+           icon={({ size, color }) => (
+             <MaterialCommunityIcon
+               name="page-last"
+@@ -172,10 +189,11 @@ const PaginationControls = ({
+               direction={I18nManager.getConstants().isRTL ? 'rtl' : 'ltr'}
+             />
+           )}
+-          iconColor={textColor}
++          iconColor={'#1F59AF'}
++          bRadius={4}
+           rippleColor={paginationControlRippleColor}
+-          disabled={numberOfPages === 0 || page === numberOfPages - 1}
+-          onPress={() => onPageChange(numberOfPages - 1)}
++          disabled={numberOfPages === 0 || page === numberOfPages}
++          onPress={() => onPageChange(numberOfPages)}
+           accessibilityLabel="page-last"
+           theme={theme}
+         />
+@@ -202,17 +220,10 @@ const PaginationDropdown = ({
+       onDismiss={() => toggleSelect(!showSelect)}
+       theme={theme}
+       anchor={
+-        <Button
+-          mode="outlined"
+-          onPress={() => toggleSelect(true)}
+-          style={styles.button}
+-          icon="menu-down"
+-          contentStyle={styles.contentStyle}
+-          theme={theme}
+-          rippleColor={selectPageDropdownRippleColor}
+-        >
+-          {`${numberOfItemsPerPage}`}
+-        </Button>
++        <TouchableOpacity onPress={() => toggleSelect(true)} style={{flexDirection: 'row' , alignItems: 'center', gap: 4}}>
++          <Text style={{color: theme.colors.primary, fontWeight: '600', fontSize: 12, flexDirection: 'row' }} children={`${numberOfItemsPerPage}`} />
++          <Image source={require('@app/Resources/Images/icons/chevron-down.png')} style={{ height: 24, width: 24 }} />
++        </TouchableOpacity>
+       }
+     >
+       {numberOfItemsPerPageList?.map((option) => (
+@@ -293,6 +304,7 @@ const PaginationDropdown = ({
+  */
+ const DataTablePagination = ({
+   label,
++  labelComponent,
+   accessibilityLabel,
+   page,
+   numberOfPages,
+@@ -323,6 +335,14 @@ const DataTablePagination = ({
+       style={[styles.container, style]}
+       accessibilityLabel="pagination-container"
+     >
++      <View style={styles.labelContainer}>
++      {!!labelComponent ? labelComponent : <Text
++        style={[styles.label, { color: labelColor }]}
++        numberOfLines={3}
++        accessibilityLabel={accessibilityLabel || 'label'}
++      >
++        {label}
++      </Text>}
+       {numberOfItemsPerPageList &&
+         numberOfItemsPerPage &&
+         onItemsPerPageChange && (
+@@ -350,13 +370,7 @@ const DataTablePagination = ({
+             />
+           </View>
+         )}
+-      <Text
+-        style={[styles.label, { color: labelColor }]}
+-        numberOfLines={3}
+-        accessibilityLabel={accessibilityLabel || 'label'}
+-      >
+-        {label}
+-      </Text>
++      </View>
+       <View style={styles.iconsContainer}>
+         <PaginationControls
+           showFastPaginationControls={showFastPaginationControls}
+@@ -374,30 +388,40 @@ DataTablePagination.displayName = 'DataTable.Pagination';
+ 
+ const styles = StyleSheet.create({
+   container: {
+-    justifyContent: 'flex-end',
++    paddingVertical: 13,
++    paddingHorizontal: 20,
++    rowGap: 12
++    // justifyContent: 'flex-end',
++    // flexDirection: 'row',
++    // alignItems: 'center',
++    // paddingLeft: 16,
++    // flexWrap: 'wrap',
++  },
++  labelContainer: {
+     flexDirection: 'row',
+-    alignItems: 'center',
+-    paddingLeft: 16,
+-    flexWrap: 'wrap',
++    justifyContent: 'space-between',
+   },
+   optionsContainer: {
+-    flexDirection: 'row',
+-    alignItems: 'center',
+-    marginVertical: 6,
++    alignItems: 'flex-end'
++    // flexDirection: 'row',
++    // alignItems: 'center',
++    // marginVertical: 6,
+   },
+   label: {
+     fontSize: 12,
+-    marginRight: 16,
++    fontWeight: '500'
++    // marginRight: 16,
+   },
+   button: {
+-    textAlign: 'center',
+-    marginRight: 16,
++
+   },
+   iconsContainer: {
+     flexDirection: 'row',
++    flex: 1,
++    justifyContent: 'space-between'
+   },
+   contentStyle: {
+-    flexDirection: 'row-reverse',
++    flexDirection: 'row',
+   },
+ });
+ 
+diff --git a/node_modules/react-native-paper/src/components/IconButton/IconButton.tsx b/node_modules/react-native-paper/src/components/IconButton/IconButton.tsx
+index acf3cd1..066297c 100644
+--- a/node_modules/react-native-paper/src/components/IconButton/IconButton.tsx
++++ b/node_modules/react-native-paper/src/components/IconButton/IconButton.tsx
+@@ -51,6 +51,7 @@ export type Props = $RemoveChildren<typeof TouchableRipple> & {
+    * Whether icon button is selected. A selected button receives alternative combination of icon and container colors.
+    */
+   selected?: boolean;
++  bRadius?: number;
+   /**
+    * Size of the icon.
+    */
+@@ -117,6 +118,7 @@ const IconButton = forwardRef<View, Props>(
+       containerColor: customContainerColor,
+       rippleColor: customRippleColor,
+       size = 24,
++      bRadius = size / 2,
+       accessibilityLabel,
+       disabled,
+       onPress,
+@@ -151,7 +153,7 @@ const IconButton = forwardRef<View, Props>(
+ 
+     const {
+       borderWidth = isV3 && mode === 'outlined' && !selected ? 1 : 0,
+-      borderRadius = buttonSize / 2,
++      borderRadius = bRadius ?? buttonSize / 2,
+     } = (StyleSheet.flatten(style) || {}) as ViewStyle;
+ 
+     const borderStyles = {
+diff --git a/node_modules/react-native-paper/src/components/TextInput/Addons/Outline.tsx b/node_modules/react-native-paper/src/components/TextInput/Addons/Outline.tsx
+index 45b675f..75dc986 100644
+--- a/node_modules/react-native-paper/src/components/TextInput/Addons/Outline.tsx
++++ b/node_modules/react-native-paper/src/components/TextInput/Addons/Outline.tsx
+@@ -43,7 +43,7 @@ export const Outline = ({
+         backgroundColor,
+         borderRadius: roundness,
+         borderWidth: (isV3 ? hasActiveOutline : focused) ? 2 : 1,
+-        borderColor: hasActiveOutline ? activeColor : outlineColor,
++        borderColor: 'transparent',
+       },
+       style,
+     ]}
+diff --git a/node_modules/react-native-paper/src/components/Tooltip/Tooltip.tsx b/node_modules/react-native-paper/src/components/Tooltip/Tooltip.tsx
+index e3a051b..fa112fb 100644
+--- a/node_modules/react-native-paper/src/components/Tooltip/Tooltip.tsx
++++ b/node_modules/react-native-paper/src/components/Tooltip/Tooltip.tsx
+@@ -16,7 +16,7 @@ import { useInternalTheme } from '../../core/theming';
+ import { addEventListener } from '../../utils/addEventListener';
+ import Portal from '../Portal/Portal';
+ import Text from '../Typography/Text';
+-
++const {width} = Dimensions.get("screen")
+ export type Props = {
+   /**
+    * Tooltip reference element. Needs to be able to hold a ref.
+@@ -199,7 +199,6 @@ const Tooltip = ({
+           >
+             <Text
+               accessibilityLiveRegion="polite"
+-              numberOfLines={1}
+               selectable={false}
+               variant="labelLarge"
+               style={{ color: theme.colors.surface }}
+@@ -230,10 +229,12 @@ Tooltip.displayName = 'Tooltip';
+ const styles = StyleSheet.create({
+   tooltip: {
+     alignSelf: 'flex-start',
+-    justifyContent: 'center',
+-    paddingHorizontal: 16,
+-    height: 32,
+-    maxHeight: 32,
++    padding: 16,
++    maxWidth: width - 32,
++    borderRadius: 8,
++    elevation: 2,
++    borderWidth: 1
++    
+   },
+   visible: {
+     opacity: 1,

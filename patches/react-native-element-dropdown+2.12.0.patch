@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-element-dropdown/src/components/MultiSelect/index.tsx b/node_modules/react-native-element-dropdown/src/components/MultiSelect/index.tsx
+index 1a3cd2e..048d4af 100644
+--- a/node_modules/react-native-element-dropdown/src/components/MultiSelect/index.tsx
++++ b/node_modules/react-native-element-dropdown/src/components/MultiSelect/index.tsx
+@@ -411,6 +411,7 @@ const MultiSelectComponent: <T>(
+           <View style={styles.dropdown}>
+             {renderLeftIcon?.(visible)}
+             <Text
++              numberOfLines={1}
+               style={StyleSheet.flatten([
+                 styles.textItem,
+                 placeholderStyle,
