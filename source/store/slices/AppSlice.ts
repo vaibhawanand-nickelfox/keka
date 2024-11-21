@@ -1,11 +1,9 @@
-import { AppState } from "model"
-import { createSlice } from "@reduxjs/toolkit"
+import { AppState } from "model";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: AppState = {
   user: null,
-  userType: null,
-  isLogged: false,
-}
+};
 
 const AppSlice = createSlice({
   name: "app",
@@ -19,8 +17,7 @@ const AppSlice = createSlice({
      * @returns {object} - The updated state of the app.
      */
     LOGIN: (state, action) => {
-      state.user = action.payload.user
-      state.userType = action.payload.userType
+      state.user = action.payload.user;
     },
     /**
      * Resets the user, authentication token, permission, user type, and login status in the state to their initial values.
@@ -29,22 +26,10 @@ const AppSlice = createSlice({
      * @return {void} This function does not return anything.
      */
     LOGOUT: (state) => {
-      state.user = null
-      state.isLogged = false
+      state.user = null;
     },
-    /**
-     * Updates the authentication token and login status in the state based on the action payload.
-     *
-     * @param {object} state - The current state of the application.
-     * @param {object} action - The action containing the payload.
-     * @param {string} action.payload - The authentication token to be set.
-     * @returns {void}
-     */
-    SET_TOKEN: (state, action) => {
-      state.isLogged = true
-    },
-  }
-})
+  },
+});
 
-export const AppReducer = AppSlice.reducer
-export const AppActions = AppSlice.actions
+export const AppReducer = AppSlice.reducer;
+export const AppActions = AppSlice.actions;

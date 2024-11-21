@@ -2370,6 +2370,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/geolocation@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "@react-native-community/geolocation@npm:3.3.0"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: a0920ff7ff2f9f24300a8eabd641fd5bd9124a8a5274f0077d64bc143111c925986eaf7c29fa25b6b0daaebb780ebf1aeee12e908584fe200fc619e30de330c6
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.75.2":
   version: 0.75.2
   resolution: "@react-native/assets-registry@npm:0.75.2"
@@ -7156,6 +7166,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
+    "@react-native-community/geolocation": ^3.3.0
     "@react-native/babel-preset": 0.75.2
     "@react-native/eslint-config": 0.75.2
     "@react-native/metro-config": 0.75.2
@@ -7183,11 +7194,14 @@ __metadata:
     prettier: 2.8.8
     react: 18.3.1
     react-native: 0.75.2
+    react-native-android-location-enabler: ^2.0.1
     react-native-error-boundary: ^1.2.4
     react-native-get-random-values: ^1.11.0
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-mmkv: 2.12.2
     react-native-paper: 5.12.3
+    react-native-permissions: ^4.1.5
+    react-native-pure-jwt: ^3.0.2
     react-native-reanimated: 3.8.1
     react-native-safe-area-context: ^4.10.9
     react-native-screens: ^3.34.0
@@ -8833,6 +8847,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-android-location-enabler@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "react-native-android-location-enabler@npm:2.0.1"
+  peerDependencies:
+    react: ">= 18.2.0"
+    react-native: ">= 0.71.0"
+  checksum: 077d5367def5d9a4186701c8b8427911f631323db5b954ac9262abbf5af5260e6b64f193f45f7777fe59130c4d980e307298af34e81d4ae9331dba745ce06a92
+  languageName: node
+  linkType: hard
+
 "react-native-error-boundary@npm:^1.2.4":
   version: 1.2.4
   resolution: "react-native-error-boundary@npm:1.2.4"
@@ -8902,6 +8926,29 @@ __metadata:
     react-native-safe-area-context: "*"
     react-native-vector-icons: "*"
   checksum: 927a8948d220fb59cb4dae2f12f3b4dc2173b9cd42e38dc74a0f25584a69978555a260c140db973f8401f7fef394dee3ec42c90b6134deeb3aa462291fd0ce5f
+  languageName: node
+  linkType: hard
+
+"react-native-permissions@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "react-native-permissions@npm:4.1.5"
+  peerDependencies:
+    react: ">=18.1.0"
+    react-native: ">=0.70.0"
+    react-native-windows: ">=0.70.0"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: dc4b366a0f561a47f032c027eb703a2be45e801788b915ed583e38f617eea23656eb63a77b17fb3a663fe3199b2ec25788f799e751421634e35a64f5258feed9
+  languageName: node
+  linkType: hard
+
+"react-native-pure-jwt@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "react-native-pure-jwt@npm:3.0.2"
+  peerDependencies:
+    react-native: ">=0.41.2"
+  checksum: bac6633179c7b8bcba8040c8f0cec61c5c0cc55378633de60a4b6e6ed46a096bd796aceae00c4aa9cf26e77dcabc4179cbf4781d81144859c3a600052d7976a0
   languageName: node
   linkType: hard
 

@@ -1,41 +1,58 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { sign, decode } from "react-native-pure-jwt";
 
 // Your secret key (in a real app, do NOT hardcode this in the frontend)
-const SECRET_KEY = 'secret-key-keka-app';
+const SECRET_KEY = "secret-key-keka-app";
 
 // Function to create JWT token
-export const createJWT = async (name: string, email: string, id: string): Promise<string | null> => {
+export const createJWT = async (
+  name: string,
+  email: string,
+  id: string
+): Promise<string | null> => {
   try {
     // Payload for JWT
     const payload = {
-        name,
-        email,
-        id
+      name,
+      email,
+      id,
+      exp: new Date().getTime() + 3600 * 1000,
     };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '7d' });
+    const token = sign(payload, SECRET_KEY, {
+      alg: "HS256",
+    });
     return token;
   } catch (error) {
-    console.error('Error creating JWT:', error);
+    console.error("Error creating JWT:", error);
     return null;
   }
 };
-export const validateJWT = async (token: string): Promise<{ isValid: boolean; message: string }> => {
+export const validateJWT = async (
+  token: string
+): Promise<{ isExpired: boolean; message: string }> => {
+  return new Promise((resolve, reject) => {
     try {
       if (!token) {
-        return { isValid: false, message: 'Token not found' };
+        reject({ expiry: 0, message: "Token not found" });
       }
-  
+
       // Decode and verify the JWT
-      const decodedToken = jwt.verify(token, SECRET_KEY) as JwtPayload;
-  
-      // Check if the token has expired
-      if (decodedToken.exp && decodedToken.exp < Math.floor(Date.now() / 1000)) {
-        return { isValid: false, message: 'Token has expired' };
-      }
-  
-      return { isValid: true, message: 'Token is valid' };
+      decode(token, SECRET_KEY).then((decodedToken) => {
+        const isValid = validateExpiry(decodedToken.payload.exp);
+        resolve({
+          isExpired: isValid,
+          message: "Token is valid",
+        });
+      });
     } catch (error) {
-      console.error('Error validating JWT:', error);
-      return { isValid: false, message: 'Invalid token' };
+      console.error("Error validating JWT:", error);
+      reject({ isExpired: true, message: "Invalid token" });
     }
-  };
+  });
+};
+export const validateExpiry = (expiryTimestamp: number): boolean => {
+  // Get the current time in seconds
+  const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+
+  // Check if the current time is greater than the expiry timestamp
+  return currentTimeInSeconds > expiryTimestamp;
+};

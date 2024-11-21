@@ -49,7 +49,7 @@ export const LoginScreen = () => {
                     </SectionView>
                     {controller.users.length > 0 && (<SectionView alignItem="center" justify="center" spacing={{ vertical: 10 }} flexed gap={{ columnGap: 6 }}>
                         <TxText children={`Registered users: `} />
-                        <FlatList nestedScrollEnabled data={controller.users} keyExtractor={(item) => item._id.toString()} renderItem={({ item }) => <TxText children={item.name} />} />
+                        <FlatList scrollEnabled={false} data={controller.users} keyExtractor={(item) => item._id.toString()} renderItem={({ item }) => <TxText children={item.name} />} />
                     </SectionView>
                     )}
                 </SectionView>

@@ -45,6 +45,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your precise location is used to show your position on the map, get directions, estimate travel times and improve search results</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your precise location is used to show your position on the map, get directions, estimate travel times and improve search results</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs to access photo library to choose photo from gallery to select profile picture</string>
+	
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>UIAppFonts</key>

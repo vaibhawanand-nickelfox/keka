@@ -1,8 +1,9 @@
-type userType = {
-    isKycDone: boolean
-}
+type User = {
+  _id: string;
+  email: string;
+  name: string;
+  token: string;
+};
 export interface AppState {
-    user: userType|null
-  userType: null | "DEALER" | "USER"
-  isLogged: boolean
+  user: User | null;
 }

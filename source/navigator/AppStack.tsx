@@ -4,7 +4,9 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "store/index"
 import { AuthRoutes, UnAuthRoutes } from "./Routes/Routes"
-
+import { validateJWT } from "services/jwtToken";
+import { useDispatch } from 'react-redux'
+import { AppActions } from "store/slices/AppSlice"
 const Stack = createNativeStackNavigator()
 
 /**
@@ -13,16 +15,27 @@ const Stack = createNativeStackNavigator()
  * @return {JSX.Element} The rendered stack navigator.
  */
 export const AppStacks = () => {
-  const { isLogged } = useSelector((state: RootState) => state.app)
+  const dispatch = useDispatch()
+  const { user } = useSelector((state: RootState) => state.app)
+  const [isValidSession, setIsValidSession] = React.useState<boolean>(false)
+  React.useEffect(() => {
+    validateJWT(user?.token).then((res) => {
+      if (!res.isExpired) {
 
+        setIsValidSession(!res.isExpired)
+      } else {
+        dispatch(AppActions.LOGOUT())
+      }
+
+    })
+  }, [user])
   return (
     <Stack.Navigator
       screenOptions={{
         headerBackTitleVisible: false,
         headerTitleAlign: "center"
       }}>
-      {isLogged
-
+      {isValidSession
         ? AuthRoutes.map(({ name, component, options }: { name: string, component: any, options: any }) => (
           <Stack.Screen key={name} name={name} component={component} options={options} />
         ))
